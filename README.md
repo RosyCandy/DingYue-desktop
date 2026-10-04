@@ -1,41 +1,31 @@
-# DingYue 订阅管理助手
+# DingYue（主仓：后端 + 桌面端 + iOS Capacitor 壳）
 
-![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Android%20%7C%20Windows%20%7C%20macOS-0054cd)
-![Version](https://img.shields.io/badge/version-1.4.0-4c4aca)
+订阅管理 App DingYue 的**主仓库**。2026-10-04 起各端独立分仓：
 
-DingYue 是一款跨平台的订阅管理工具，帮你集中追踪 Netflix、Spotify、爱奇艺等各类订阅的续费周期与开销——到期邮件提醒、多币种换算、支出统计与时间线一览，不再被自动扣费打个措手不及。
+| 项目 | 位置 | 说明 |
+|---|---|---|
+| 后端 API | 本仓 `server/index.ts` | Express + MySQL，部署于阿里云 ECS（ngaasiu.studio/api） |
+| 桌面端 | 本仓 `electron/` | Electron 壳，界面加载 DingYue-Web 构建的 dist |
+| iOS Capacitor 壳 | 本仓 `ios/` | `npx cap copy ios` 流（界面同样来自 DingYue-Web） |
+| **网页版** | `~/Desktop/DingYue-Web` | React 19 + Vite + Tailwind 4（官网 + 应用主界面） |
+| **Android** | `~/Desktop/DingYue-Android` | Capacitor 安卓原生工程（自包含） |
+| **iOS 原生** | `~/Desktop/DingYue-iOS` | SwiftUI 原生客户端 |
+| **鸿蒙** | `~/Desktop/DingYue-Harmony` | ArkTS 原生客户端 |
 
-## ✨ 功能特性
+## 常用命令
 
-- **订阅管理**：月付 / 季度付 / 年付 / 免费试用，自定义分类、地区与账户邮箱，应用图标在线搜索；删除进回收站，30 天内可恢复
-- **到期提醒**：到期前 15 / 7 / 3 天、到期当天及过期续订均有邮件提醒，应用内消息中心同步推送
-- **多货币**：支持 160+ 种货币，按实时汇率全站自动换算
-- **数据洞察**：支出趋势（美元坐标轴 + 弹性刻度）、未来支出预测、分类明细、账户对比与优化建议
-- **账单时间线**：2016 → 2036 超长跨度，绿点标记订阅开始、红点标记续费到期
-- **登录方式**：邮箱验证码、通行密钥（Touch ID / Windows Hello / Bitwarden）、Google / GitHub / Gitee / 微信
-- **多语言与主题**：简体中文、繁體中文、English、Latin、한국어；深色模式
-- **数据云端同步**：一个账号，全平台数据一致
+```bash
+npm run server        # 后端（tsx，3001 端口）
+npm run dev           # 同上（watch）
+npm run ios:sync      # 把 DingYue-Web 构建的 dist 同步进 iOS 壳
+npm run desktop       # 打桌面安装包（先自动构建 DingYue-Web）
+bash scripts/build-desktop.sh   # 桌面全流程
+bash scripts/build-ios.sh       # iOS 模拟器全流程
+```
 
-## 📥 下载安装
+## 注意
 
-| 平台 | 获取方式 |
-| :--- | :--- |
-| 🌐 Web | [ngaasiu.studio](https://ngaasiu.studio) |
-| 🤖 Android | [GitHub Releases](https://github.com/RosyCandy/DingYue/releases/latest) 下载 APK |
-| 🪟 Windows | [GitHub Releases](https://github.com/RosyCandy/DingYue/releases/latest)（x64 / ARM64） |
-| 🍎 macOS | [GitHub Releases](https://github.com/RosyCandy/DingYue/releases/latest)（Apple Silicon / Intel） |
-| 📱 iOS | 🚧 开发中 |
-
-## 🛠 技术栈
-
-**前端**：React 19 · TypeScript · Vite · Tailwind CSS v4 · Recharts · Framer Motion
-**后端**：Node.js · Express · MySQL（mysql2）
-**跨端**：Capacitor 8（Android / iOS）· Electron（Windows / macOS）
-
-## 🔗 相关链接
-
-- 官网：<https://ngaasiu.studio>
-- 版本发布：<https://github.com/RosyCandy/DingYue/releases>
-- 隐私政策：<https://ngaasiu.studio/privacy>
-- 用户协议：<https://ngaasiu.studio/agreement>
-- 联系我们：support@ngaasiu.studio
+- **网页发版**：`cd ~/Desktop/DingYue-Web && npm run build`，然后把 `dist/` 部署到
+  服务器 nginx 目录（生产部署流程变更见部署文档）。
+- `assetlinks.json`（android）、Google OAuth 客户端等包名配置按各端包名登记：
+  Android `com.dingyue.app`、iOS 原生 `studio.ngaasiu.DingYue`、桌面 `com.dingyue.app`。

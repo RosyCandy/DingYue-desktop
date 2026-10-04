@@ -11,8 +11,9 @@ VERSION=$(node -p "require('./package.json').version")
 export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
 export ELECTRON_BUILDER_BINARIES_MIRROR="https://npmmirror.com/mirrors/electron-builder-binaries/"
 
-echo "==> 1/3 构建 Web（公网 API）"
-VITE_API_BASE_URL="https://ngaasiu.studio/api" npm run build
+echo "==> 1/3 构建 Web（来自 ~/Desktop/DingYue-Web，公网 API）"
+(cd "$HOME/Desktop/DingYue-Web" && VITE_API_BASE_URL="https://ngaasiu.studio/api" npm run build)
+rsync -a --delete "$HOME/Desktop/DingYue-Web/dist/" dist/
 
 echo "==> 1.5/3 复制界面资源到打包目录（dist 是 electron-builder 保留目录名，需换名打包）"
 rm -rf desktop-files && mkdir -p desktop-files && cp -a dist desktop-files/dist

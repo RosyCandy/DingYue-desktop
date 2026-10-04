@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 API_URL="${VITE_API_BASE_URL:-https://ngaasiu.studio/api}"
-BUNDLE_ID="com.duoduo.app"
+BUNDLE_ID="com.dingyue.app"
 SCHEME="App"
 PROJECT="ios/App/App.xcodeproj"
 DERIVED="/tmp/ios-build"
@@ -19,7 +19,8 @@ if [ -z "$UDID" ]; then
 fi
 
 echo "==> 1/4 构建 Web 资源 (API: ${API_URL})"
-VITE_API_BASE_URL="$API_URL" npm run build
+(cd "$HOME/Desktop/DingYue-Web" && VITE_API_BASE_URL="$API_URL" npm run build)
+rsync -a --delete "$HOME/Desktop/DingYue-Web/dist/" dist/
 
 echo "==> 2/4 同步到 iOS 工程"
 npx cap sync ios

@@ -4,19 +4,13 @@
   "version": "1.4.1",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run frontend\" \"npm run server\"",
-    "frontend": "vite --port=3000 --host=0.0.0.0",
-    "server": "tsx watch server/index.ts",
-    "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit",
-    "cap:sync": "vite build && npx cap sync",
+    "dev": "tsx watch server/index.ts",
+    "server": "tsx server/index.ts",
     "cap:open:ios": "npx cap open ios",
-    "apk": "bash scripts/build-apk.sh",
     "release": "bash scripts/release.sh",
     "desktop": "electron-builder -mwl --config electron-builder.json",
-    "desktop:dir": "electron-builder --dir --config electron-builder.json"
+    "desktop:dir": "electron-builder --dir --config electron-builder.json",
+    "ios:sync": "rsync -a --delete ../DingYue-Web/dist/ dist/ && npx cap copy ios"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.1",
