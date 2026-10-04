@@ -1,10 +1,10 @@
 # DingYue（主仓：后端 + 桌面端 + iOS Capacitor 壳）
 
-订阅管理 App DingYue 的**主仓库**。2026-10-04 起各端独立分仓：
+订阅管理 App DingYue 的**主仓库**（现仅桌面端 + iOS Capacitor 壳）。2026-10-04 起各端独立分仓：
 
 | 项目 | 位置 | 说明 |
 |---|---|---|
-| 后端 API | 本仓 `server/index.ts` | Express + MySQL，部署于阿里云 ECS（ngaasiu.studio/api） |
+| 后端 API | `~/Desktop/DingYue-Server` | Express + MySQL，独立 git 仓（部署到阿里云 ECS，ngaasiu.studio/api） |
 | 桌面端 | 本仓 `electron/` | Electron 壳，界面加载 DingYue-Web 构建的 dist |
 | iOS Capacitor 壳 | 本仓 `ios/` | `npx cap copy ios` 流（界面同样来自 DingYue-Web） |
 | **网页版** | `~/Desktop/DingYue-Web` | React 19 + Vite + Tailwind 4（官网 + 应用主界面） |
@@ -15,8 +15,6 @@
 ## 常用命令
 
 ```bash
-npm run server        # 后端（tsx，3001 端口）
-npm run dev           # 同上（watch）
 npm run ios:sync      # 把 DingYue-Web 构建的 dist 同步进 iOS 壳
 npm run desktop       # 打桌面安装包（先自动构建 DingYue-Web）
 bash scripts/build-desktop.sh   # 桌面全流程

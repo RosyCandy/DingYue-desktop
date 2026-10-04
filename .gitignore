@@ -30,3 +30,5 @@ ios/App/App/capacitor.config.json
 server/uploads/icons/*
 .idea/
 desktop-dist/
+desktop-dist/
+desktop-files/
