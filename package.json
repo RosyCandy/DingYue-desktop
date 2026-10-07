@@ -8,7 +8,7 @@
     "release": "bash scripts/release.sh",
     "desktop": "electron-builder -mwl --config electron-builder.json",
     "desktop:dir": "electron-builder --dir --config electron-builder.json",
-    "ios:sync": "rsync -a --delete ../DingYue-Web/dist/ dist/ && npx cap copy ios"
+    "ios:sync": "bash scripts/sync-web.sh && npx cap copy ios"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.1",

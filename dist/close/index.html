@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>账号注销 · DingYue</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f5f3ec; color: #1a1c1e; padding: 40px 20px 80px; }
+  main { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+  .meta { color: #6b7280; font-size: 13px; margin-bottom: 24px; }
+  .card { background: #fff; border: 1px solid #e2ded2; border-radius: 14px; padding: 24px; margin-bottom: 16px; }
+  .warning { background: #fdeceb; border: 1.5px solid #e8b3ae; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+  .warning strong { display: block; font-size: 15px; color: #b3261e; margin-bottom: 6px; }
+  .warning p { font-size: 13.5px; line-height: 1.7; color: #7a2e28; }
+  .warning .en { color: #a05a54; }
+  .en { font-size: 12.5px; color: #6b7280; line-height: 1.7; margin-top: 8px; }
+  .error { background: #fdeceb; color: #b3261e; font-size: 13.5px; border-radius: 8px;
+    padding: 10px 12px; margin-top: 12px; display: none; }
+  .checkbox-row { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; cursor: pointer; }
+  .checkbox-row input { width: 18px; height: 18px; margin-top: 1px; accent-color: #b3261e; }
+  .checkbox-row span { font-size: 13.5px; line-height: 1.6; color: #414755; }
+  button.action { width: 100%; margin-top: 18px; padding: 13px 16px; font-size: 15px; font-weight: 700;
+    border: none; border-radius: 10px; cursor: pointer; }
+  button.danger-btn { background: #b3261e; color: #fff; }
+  button.green-btn { background: #2f7d52; color: #fff; }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .current { font-size: 14px; color: #414755; }
+  .current strong { color: #1a1c1e; }
+  .success { text-align: center; padding: 16px 0 8px; }
+  .success .icon { font-size: 44px; }
+  .success h2 { font-size: 20px; margin-top: 10px; color: #2f7d52; }
+  .success p { font-size: 13.5px; color: #6b7280; margin-top: 10px; line-height: 1.7; }
+  .hint { font-size: 13.5px; color: #414755; line-height: 1.8; }
+  .hint ol { padding-left: 20px; margin-top: 8px; }
+  .hint li { margin-top: 6px; }
+  .hidden { display: none; }
+  footer { max-width: 560px; margin: 40px auto 0; border-top: 1px solid #e2ded2; padding-top: 18px;
+    font-size: 12px; color: #6b7280; }
+  a { color: #0054cd; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>账号注销 / Delete Account</h1>
+  <p class="meta">DingYue 订阅管理助手 · 账号删除通道（无需安装应用即可使用）</p>
+
+  <!-- 检查登录状态中 -->
+  <div class="card" id="step-checking">
+    <p class="hint">正在检查登录状态… / Checking sign-in status…</p>
+  </div>
+
+  <!-- 未登录：指引回应用登录，不提供登录框 -->
+  <div class="card hidden" id="step-needlogin">
+    <p class="hint">
+      检测到本浏览器<strong>尚未登录</strong> DingYue 账号。账号注销需要先登录：
+      <ol>
+        <li>打开 DingYue 应用（或网页版 <a href="https://www.ngaasiu.studio">www.ngaasiu.studio</a>）并登录你的账号；</li>
+        <li>已登录的应用内直接执行注销：设置 → 账户 → 注销账号；</li>
+        <li>或者在同一浏览器登录网页版后，回到本页继续注销。</li>
+      </ol>
+    </p>
+    <p class="en">You are not signed in on this browser. Please sign in to DingYue (in the App, or on <a href="https://www.ngaasiu.studio">www.ngaasiu.studio</a>) first — then delete your account in the App under Settings → Account → Delete account, or return to this page.</p>
+  </div>
+
+  <!-- 已登录：确认注销 -->
+  <div class="hidden" id="step-confirm-wrap">
+    <div class="warning" id="warning">
+      <strong>⚠️ 注销不可恢复</strong>
+      <p>注销后，您的账户、全部订阅记录、统计数据、自定义分类与提醒设置将被<strong>永久删除且无法恢复</strong>。此操作不可撤销。如只想清除部分数据，请先在应用内删除对应订阅，无需注销整个账号。</p>
+      <p class="en">Deletion is permanent. Your account, all subscription records, statistics, custom categories and reminder settings will be permanently erased and cannot be recovered.</p>
+    </div>
+
+    <div class="card">
+      <p class="current">当前登录账号：<strong id="current-email"></strong></p>
+      <label class="checkbox-row">
+        <input type="checkbox" id="confirm-check">
+        <span>我已了解：注销后该账号的全部数据将被永久删除，且无法恢复。<br>
+        <span class="en" style="display:block;">I understand that all data of this account will be permanently deleted and cannot be recovered.</span></span>
+      </label>
+      <button class="action danger-btn" id="delete-btn" disabled>永久注销账号 / Permanently delete account</button>
+      <p class="error" id="delete-error"></p>
+    </div>
+  </div>
+
+  <!-- 完成 -->
+  <div class="card success hidden" id="step-done">
+    <div class="icon">✅</div>
+    <h2>账号已注销 / Account deleted</h2>
+    <p>您的账号及全部数据已删除。感谢您使用 DingYue。<br>
+    <span class="en">Your account and all associated data have been deleted. Thank you for using DingYue.</span></p>
+  </div>
+</main>
+<footer>
+  DingYue · <a href="mailto:support@ngaasiu.studio">support@ngaasiu.studio</a>
+  · <a href="/agreement">用户协议</a> · <a href="/privacy">隐私政策</a>
+</footer>
+
+<script>
+(function () {
+  var API = '/api';
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id) { $(id).classList.remove('hidden'); };
+  var hide = function (id) { $(id).classList.add('hidden'); };
+
+  // 与网页版应用同一 localStorage 键，天然共享登录态（同域 ngaasiu.studio）
+  var token = null;
+  try { token = localStorage.getItem('auth_token'); } catch (e) { token = null; }
+
+  function showNeedLogin() {
+    hide('step-checking');
+    show('step-needlogin');
+  }
+
+  if (!token) {
+    showNeedLogin();
+  } else {
+    // 服务器校验登录状态：有效 → 直接进入确认步骤；失效 → 视为未登录
+    fetch(API + '/users/profile', { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (res) {
+        if (!res.ok) { showNeedLogin(); return null; }
+        return res.json();
+      })
+      .then(function (user) {
+        if (!user) return;
+        hide('step-checking');
+        $('current-email').textContent = user.email || '';
+        show('step-confirm-wrap');
+      })
+      .catch(showNeedLogin);
+  }
+
+  $('confirm-check').addEventListener('change', function () { $('delete-btn').disabled = !this.checked; });
+
+  $('delete-btn').addEventListener('click', function () {
+    var errEl = $('delete-error');
+    errEl.style.display = 'none';
+    if (!token) return;
+    var btn = this;
+    btn.disabled = true; btn.textContent = '删除中… / Deleting…';
+    fetch(API + '/users/account', { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (r) {
+        if (!r.ok) { throw new Error(r.data.error || ('HTTP ' + r.status)); }
+        hide('step-confirm-wrap');
+        hide('warning');
+        show('step-done');
+        window.scrollTo(0, 0);
+      })
+      .catch(function (e) {
+        errEl.textContent = '注销失败：' + e.message + '（如持续失败请联系 support@ngaasiu.studio）';
+        errEl.style.display = 'block';
+        btn.disabled = false; btn.textContent = '永久注销账号 / Permanently delete account';
+      });
+  });
+})();
+</script>
+</body>
+</html>

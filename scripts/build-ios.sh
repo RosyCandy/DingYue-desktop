@@ -18,9 +18,11 @@ if [ -z "$UDID" ]; then
   sleep 8
 fi
 
-echo "==> 1/4 构建 Web 资源 (API: ${API_URL})"
-(cd "$HOME/Desktop/DingYue-Web" && VITE_API_BASE_URL="$API_URL" npm run build)
-rsync -a --delete "$HOME/Desktop/DingYue-Web/dist/" dist/
+echo "==> 1/4 使用本仓已入库的 Web 产物 dist/（更新 Web 界面请先跑 scripts/sync-web.sh）"
+if [ ! -f dist/index.html ]; then
+  echo "❌ dist/index.html 不存在——先运行 bash scripts/sync-web.sh 同步 Web 构建产物"
+  exit 1
+fi
 
 echo "==> 2/4 同步到 iOS 工程"
 npx cap sync ios
