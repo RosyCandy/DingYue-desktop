@@ -32,3 +32,4 @@ server/uploads/icons/*
 desktop-dist/
 desktop-dist/
 desktop-files/
+.zcode/
