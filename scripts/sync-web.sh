@@ -7,7 +7,12 @@
 # 同步后记得在各仓 commit（或直接跑 push-all.sh）。
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-WEB="$HOME/Desktop/DingYue-Web"
+# 优先找同级目录（六仓同在一个总文件夹时）；兼容旧的平铺布局
+if [ -d "$ROOT/../DingYue-Web" ]; then
+  WEB="$ROOT/../DingYue-Web"
+else
+  WEB="$HOME/Desktop/DingYue-Web"
+fi
 
 if [ ! -d "$WEB" ]; then
   echo "❌ 找不到 $WEB —— 本仓已自包含（dist 已入库），不需要也可以不跑本脚本"
