@@ -4,21 +4,9 @@
   "version": "1.4.1",
   "type": "module",
   "scripts": {
-    "cap:open:ios": "npx cap open ios",
     "release": "bash scripts/release.sh",
     "desktop": "electron-builder -mwl --config electron-builder.json",
-    "desktop:dir": "electron-builder --dir --config electron-builder.json",
-    "ios:sync": "bash scripts/sync-web.sh && npx cap copy ios"
-  },
-  "dependencies": {
-    "@capacitor/app": "^8.1.1",
-    "@capacitor/browser": "^8.0.4",
-    "@capacitor/cli": "^8.5.1",
-    "@capacitor/core": "^8.5.1",
-    "@capacitor/ios": "^8.5.1",
-    "@capawesome/capacitor-apple-sign-in": "^0.1.4",
-    "@capawesome/capacitor-google-sign-in": "^0.1.4",
-    "@capgo/capacitor-passkey": "^8.5.1"
+    "desktop:dir": "electron-builder --dir --config electron-builder.json"
   },
   "devDependencies": {
     "electron": "^44.4.5",
@@ -29,6 +17,6 @@
     "name": "RosyCandy",
     "email": "rosyhazes@126.com"
   },
-  "description": "DingYue 订阅管理助手",
+  "description": "DingYue 订阅管理助手（桌面端）",
   "license": "MIT"
 }

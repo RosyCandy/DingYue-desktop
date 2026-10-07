@@ -2,7 +2,7 @@
 # 把 DingYue-Web 的最新构建同步进各端壳（显式更新动作，各壳平时只用已入库的 dist）。
 # 用法: bash scripts/sync-web.sh
 # 同步目标（存在才同步）:
-#   • 本仓 dist/                          → 桌面 Electron + iOS 壳
+#   • 本仓 dist/                          → 桌面 Electron
 #   • ../DingYue-Android/app/src/main/assets/public/ → 安卓壳烘焙资源
 # 同步后记得在各仓 commit（或直接跑 push-all.sh）。
 set -euo pipefail
@@ -17,7 +17,7 @@ fi
 echo "==> 构建 DingYue-Web（公网 API）"
 (cd "$WEB" && VITE_API_BASE_URL="https://ngaasiu.studio/api" npm run build)
 
-echo "==> 同步进本仓 dist/（桌面 + iOS 壳）"
+echo "==> 同步进本仓 dist/（桌面 Electron）"
 rsync -a --delete "$WEB/dist/" "$ROOT/dist/"
 
 if [ -d "$ROOT/../DingYue-Android/app/src/main/assets/public" ]; then
